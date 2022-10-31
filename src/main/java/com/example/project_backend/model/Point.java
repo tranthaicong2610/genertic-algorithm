@@ -19,9 +19,6 @@ public class Point {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "coordinateX")
-    private float  coordinateX;
-
-    @Column(name = "coordinateY" )
-    private float coordinateY ;
+    @Column(name = "img" )
+    private String img ;
 }

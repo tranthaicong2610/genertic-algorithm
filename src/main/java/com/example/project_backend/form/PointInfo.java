@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PointInfo {
-    private int point1;
-    private int point2;
-    private int point3;
+    private String point1;
+    private String point2;
+    private String point3;
 }
