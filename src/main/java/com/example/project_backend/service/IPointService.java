@@ -11,7 +11,7 @@ public interface IPointService {
     List<String> crossover(List<String> father, List<String> mother);
 
     // dot bien
-    List<String> mutation(List<String> father , List<String> mother);
+    List<String> mutation();
 
 
 }
