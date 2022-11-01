@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "connecPoint")
+@Table(name = "connectPoint")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,7 +17,7 @@ public class ConnectPoint {
     private int id ;
 
     @Column(name ="pointStart")
-    private int pointStart;
+    private String pointStart;
 
     @Column(name = "pointEnd")
     private String pointEnd;
@@ -26,7 +26,7 @@ public class ConnectPoint {
     private float distance;
 
     @Column(name = "time")
-    private int time;
+    private float time;
 
 
 }
