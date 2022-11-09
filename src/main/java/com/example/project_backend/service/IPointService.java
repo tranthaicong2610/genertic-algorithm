@@ -9,10 +9,13 @@ public interface IPointService {
     List<Point> getPoints();
 
     // lai ghep cheo
-    List<String> crossover(List<String> father, List<String> mother);
+    List<String> crossover(List<String> father, List<String> mother,PointInfo pointInfo);
 
     // dot bien
-    List<String> mutation(PointInfo pointInfo);
+    List<String> mutation(List<String> father ,PointInfo pointInfo);
+
+    // tinh quang duong
+    int calculateDistance(PointInfo pointInfo);
 
 
 }
