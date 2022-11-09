@@ -1,5 +1,6 @@
 package com.example.project_backend.service;
 
+import com.example.project_backend.form.PointInfo;
 import com.example.project_backend.model.Point;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface IPointService {
     List<String> crossover(List<String> father, List<String> mother);
 
     // dot bien
-    List<String> mutation();
+    List<String> mutation(PointInfo pointInfo);
 
 
 }

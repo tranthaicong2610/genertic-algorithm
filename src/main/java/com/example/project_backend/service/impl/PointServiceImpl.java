@@ -1,16 +1,14 @@
 package com.example.project_backend.service.impl;
 
+import com.example.project_backend.form.PointInfo;
 import com.example.project_backend.model.Point;
 import com.example.project_backend.repository.PointRepository;
 import com.example.project_backend.service.IPointService;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -37,7 +35,7 @@ public class PointServiceImpl implements IPointService {
 
     @Override
     public List<String> crossover(List<String> father, List<String> mother) {
-        List<String> childIndividual = new  ArrayList<String>();
+        List<String> childIndividual = new ArrayList<>();
         double a ;
         int selectFatherOrMother  ;
         for(int i = 0 ; i < father.size() ; i++){
@@ -55,24 +53,55 @@ public class PointServiceImpl implements IPointService {
 
     /**
      *
-     * @param father ca the cha
-     * @param mother ca the con
      * @return tra ve ca the con dot bien
      */
     @Override
-    public List<String> mutation() {
+    public List<String> mutation(PointInfo pointInfo) {
         List<String> cityNames = this.pointRepository.getNameCity();
-        List<String> childIndividual = new  ArrayList<String>();
+        List<String> childIndividual = new ArrayList<>();
         while(true){
             for(int i=0;i < 18 ;i++){
                 childIndividual.add(cityNames.get((int)Math.round(Math.random()*9)));
+            }
+            if(checkGen(childIndividual , pointInfo)) {
+                break;
             }
         }
         return childIndividual;
     }
 
-    public void main(String[] args) {
-        List<String> entityManager = this.pointRepository.getNameCity();
-        System.out.println(entityManager);
+    /**
+     * ham check sự phù hợp của gen đc tạo ra
+     * kiểm tra xem có 2 giá trị trùng sát nhau
+     * kiểm tra có tồn tại 3 điểm trong gen ko
+     *
+     * @param gens
+     * @param pointInfo
+     * @return
+     */
+
+    static Boolean checkGen(List<String> gens ,PointInfo pointInfo){
+        // kiem tra xem co 2 gia tri trung gan nhau
+        for(int i=0;i < gens.size()-1 ;i++){
+            if(gens.get(i).equals(gens.get(i+1)) ){
+                return false;
+            }
+        }
+
+        // kiem tra xem ma gen da di qua 3 diem chua
+        if(!(
+            gens.contains(pointInfo.getPoint1()) &&
+            gens.contains(pointInfo.getPoint1()) &&
+            gens.contains(pointInfo.getPoint1())
+        )){
+            return false;
+        }
+
+        // qua het cac dieu kien
+        return true;
     }
+
+
+
+
 }
