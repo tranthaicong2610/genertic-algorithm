@@ -2,9 +2,9 @@ package com.example.project_backend.service.impl;
 
 import com.example.project_backend.form.PointInfo;
 import com.example.project_backend.model.Point;
+import com.example.project_backend.repository.ConnectPointRepository;
 import com.example.project_backend.repository.PointRepository;
 import com.example.project_backend.service.IPointService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +15,12 @@ import java.util.List;
 public class PointServiceImpl implements IPointService {
 
     private final PointRepository  pointRepository;
+    private final ConnectPointRepository connectPointRepository;
+
     @Autowired
-    public PointServiceImpl(PointRepository pointRepository){
+    public PointServiceImpl(PointRepository pointRepository ,ConnectPointRepository connectPointRepository){
         this.pointRepository = pointRepository;
+        this.connectPointRepository = connectPointRepository;
     }
     @Override
     public List<Point> getPoints() {
@@ -126,14 +129,31 @@ public class PointServiceImpl implements IPointService {
 
     /**
      * Tinh quang duong phai di chuyen
-     * @param pointInfo cac diem di qua
-     * @return
+     * @param gens duong di qua 3 diem
+     * @return khoang cach cua chung
      */
     @Override
-    public int calculateDistance(PointInfo pointInfo) {
+    public float calculateDistance(List<String> gens) {
+        float distancePointTotal  = 0;
+        for (int i = 0; i < gens.size()-1; i++) {
+            float distanceTwoPoint =  (this.connectPointRepository.getDistance(gens.get(i+1),gens.get(i)) != null)
+                    ? this.connectPointRepository.getDistance(gens.get(i+1),gens.get(i))
+                    : this.connectPointRepository.getDistance(gens.get(i),gens.get(i+1));
+            distancePointTotal +=  distanceTwoPoint;
+        }
+        return distancePointTotal;
+    }
 
-
-        return 0;
+    @Override
+    public float calculateTime(List<String> gens) {
+        float timePointTotal  = 0;
+        for (int i = 0; i < gens.size()-1; i++) {
+            float distanceTwoPoint =  (this.connectPointRepository.getTime(gens.get(i+1),gens.get(i)) != null)
+                    ? this.connectPointRepository.getTime(gens.get(i+1),gens.get(i))
+                    : this.connectPointRepository.getTime(gens.get(i),gens.get(i+1));
+            timePointTotal +=  distanceTwoPoint;
+        }
+        return timePointTotal;
     }
 
 

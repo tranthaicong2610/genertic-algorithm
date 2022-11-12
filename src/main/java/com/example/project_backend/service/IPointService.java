@@ -15,7 +15,8 @@ public interface IPointService {
     List<String> mutation(List<String> father ,PointInfo pointInfo);
 
     // tinh quang duong
-    int calculateDistance(PointInfo pointInfo);
+    float calculateDistance(List<String> gens);
 
+    float calculateTime(List<String> gens);
 
 }
