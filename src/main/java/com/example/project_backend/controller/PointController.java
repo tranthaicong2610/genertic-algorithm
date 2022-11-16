@@ -35,8 +35,25 @@ public class PointController {
 
     @PostMapping("/data")
     public PointInfo pointClient(@RequestBody PointInfo pointInfo){
-        System.out.println(pointInfo.toString());
+        //test
+        List<String> gens1 = new ArrayList<>();
+        List<String> gens2 = new ArrayList<>();
+        List<String> gens3 = new ArrayList<>();
+        List<String> gens4 = new ArrayList<>();
+        List<String> gens5 = new ArrayList<>();
 
-        return pointInfo;
+        gens1.add("HANOI","HAIPHONG","HANAM","NAMDINH");
+        gens2.add("NAMDINH","HAIDUONG","NGHEAN","QUANGNAM","HANOI","HAIPHONG");
+        gens3.add("NAMDINH","HAIDUONG","NGHEAN","QUANGNAM","HANOI","HAIDUONG","NGHEAN","HAIPHONG");
+        gens4.add("NAMDINH","HAIDUONG","NGHEAN","THANHHOA","HAIDUONG","NGHEAN","QUANGNAM","HANOI","HAIPHONG");
+        gens4.add("HANOI","THANHHOA","HAIDUONG","NGHEAN","HAIPHONG","HANAM","NAMDINH");
+        System.out.println(pointInfo.toString());
+        List<GenerationInformationByDistance> list = new ArrayList<>();
+        list.add(123,gens1);
+        list.add(152,gens2);
+        list.add(185,gens3);
+        list.add(123,gens4);
+        list.add(225,gens5);
+        return list;
     }
 }

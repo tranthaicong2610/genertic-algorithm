@@ -1,5 +1,7 @@
 package com.example.project_backend.service.impl;
 
+import com.example.project_backend.form.GenerationInformationByDistance;
+import com.example.project_backend.form.GenerationInformationByTime;
 import com.example.project_backend.form.PointInfo;
 import com.example.project_backend.model.Point;
 import com.example.project_backend.repository.ConnectPointRepository;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -30,10 +34,11 @@ public class PointServiceImpl implements IPointService {
 
 
     /**
-     * random chi lay 0 va 1 va loai 1 vi co su cong bang hon khi 1 chiem den khoang vung 1
-     * @param father ca the cha ung voi 0
-     * @param mother ca the me ung voi 2
-     * @return tra ve ca the con
+     *
+     * @param father ma gen cha
+     * @param mother ma gen me
+     * @param pointInfo thong tin 3 diem can tim
+     * @return ma gen sau khi duoc lai ghep
      */
 
     @Override
@@ -42,17 +47,23 @@ public class PointServiceImpl implements IPointService {
         double a ;
         int selectFatherOrMother  ;
         while(true){
+            int pointFather = (int) Math.random()*(father.size()-1);
+            int pointMother = (int) Math.random()*(mother.size()-1);
             childIndividual = new ArrayList<>();
-            for(int i = 0 ; i < father.size() ; i++){
-                a = Math.random();
-                selectFatherOrMother = (int) Math.round(a*2);
-                while(selectFatherOrMother ==1){
-                    a =Math.random();
-                    selectFatherOrMother = (int) Math.round(a*2);
-                }
-                String s = (selectFatherOrMother == 0) ?  father.get(i) :  mother.get(i);
-                childIndividual.add(s);
-            }
+            childIndividual.addAll(father.subList(0,pointFather));
+            childIndividual.addAll(mother.subList(pointMother,mother.size()));
+
+
+//            for(int i = 0 ; i < father.size() ; i++){
+//                a = Math.random();
+//                selectFatherOrMother = (int) Math.round(a*2);
+//                while(selectFatherOrMother ==1){
+//                    a =Math.random();
+//                    selectFatherOrMother = (int) Math.round(a*2);
+//                }
+//                String s = (selectFatherOrMother == 0) ?  father.get(i) :  mother.get(i);
+//                childIndividual.add(s);
+//            }
             if(checkGen(childIndividual , pointInfo)) {
                 break;
             }
@@ -77,7 +88,7 @@ public class PointServiceImpl implements IPointService {
                 childIndividual.add(val);
             }
             // vi tri dot bien
-            int mutationPoint =  (int)Math.round(Math.random()*17);
+            int mutationPoint =  (int)Math.round(Math.random()*(father.size()-1));
 
             // gia tri dot bien
             String mutationValue = cityNames.get((int)Math.round(Math.random()*9));
@@ -144,6 +155,11 @@ public class PointServiceImpl implements IPointService {
         return distancePointTotal;
     }
 
+    /**
+     * Tinh thoi gian  phai di chuyen
+     * @param gens duong di qua 3 diem
+     * @return thoi gian cua chung
+     */
     @Override
     public float calculateTime(List<String> gens) {
         float timePointTotal  = 0;
@@ -156,6 +172,25 @@ public class PointServiceImpl implements IPointService {
         return timePointTotal;
     }
 
+    /**
+     *
+     * @param gens duong di giua 3 diem
+     * @return tra ve fitness cua ca the theo khoang cach
+     */
+
+    float fitnessCalculatorByDistance(List<String> gens){
+        return 1/calculateDistance(gens);
+    }
+
+    /**
+     *
+     * @param gens duong di giua 3 diem
+     * @return tra ve fitness cua ca the theo thoi gian
+     */
+
+    float fitnessCalculatorTime(List<String> gens){
+        return 1/calculateTime(gens);
+    }
 
     /**
      * ham lay cat ra doan chua 3 diem can xet
@@ -170,6 +205,69 @@ public class PointServiceImpl implements IPointService {
         int pointStart = Math.min(indexPoint1,Math.min(indexPoint2,indexPoint3));
         int pointEnd = Math.max(indexPoint1,Math.min(indexPoint2,indexPoint3));
         return gens.subList(pointStart,pointEnd+1);
+    }
+
+    /**
+     *
+     * @param list danh sach cac thong tin gen va distance  trong quan the
+     * @return tra ve 1 quan the dc sap xep theo khoang cach tang dan  dan
+     */
+
+    List<GenerationInformationByDistance> orderByDistance(List<GenerationInformationByDistance> list){
+        Collections.sort(list, new Comparator<GenerationInformationByDistance>() {
+            @Override
+            public int compare(GenerationInformationByDistance o1, GenerationInformationByDistance o2) {
+                if (o1.getShortestDistance() == o2.getShortestDistance()) return 0;
+                if (o1.getShortestDistance() > o2.getShortestDistance()) return 1;
+                return -1;
+            }
+        });
+        return list;
+    }
+
+    /**
+     *
+     * @param list danh sach cac thong tin gen va time  trong quan the
+     * @return tra ve 1 quan the dc sap xep theo thoi gian tang dan dan
+     */
+
+    List<GenerationInformationByTime> orderByTime(List<GenerationInformationByTime> list){
+        Collections.sort(list, new Comparator<GenerationInformationByTime>() {
+            @Override
+            public int compare(GenerationInformationByTime o1, GenerationInformationByTime o2) {
+                if(o1.getTime() == o2.getTime()) return 0;
+                if (o1.getTime() > o2.getTime()) return 1;
+                return -1;
+            }
+        });
+        return list;
+    }
+
+    /**
+     * ham tinh tong khoang cach cua 1 quan  the
+     * @param list danh sach thong tin quan the gom gen va khoang cach
+     * @return tra ve tong khoang cach cua 1 quan the
+     */
+    float distanceTotal(List<GenerationInformationByDistance> list){
+        float sum = 0;
+        for(GenerationInformationByDistance generationInformationByDistance : list){
+            sum += generationInformationByDistance.getShortestDistance();
+        }
+        return sum;
+    }
+
+
+    /**
+     * ham tinh tong thoi gian cua 1 the he
+     * @param list danh sach thong tin quan the gom gen va thoi gian
+     * @return tra ve tong thoi gian cua 1 quan the
+     */
+    float timeTotal(List<GenerationInformationByTime> list){
+        float sum =0;
+        for(GenerationInformationByTime generationInformationByTime : list){
+            sum += generationInformationByTime.getTime();
+        }
+        return sum;
     }
 
 
