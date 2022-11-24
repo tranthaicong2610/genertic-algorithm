@@ -178,7 +178,7 @@ public class PointServiceImpl implements IPointService {
      * @return tra ve fitness cua ca the theo khoang cach
      */
 
-    float fitnessCalculatorByDistance(List<String> gens){
+    public float fitnessCalculatorByDistance(List<String> gens){
         return 1/calculateDistance(gens);
     }
 
@@ -188,7 +188,7 @@ public class PointServiceImpl implements IPointService {
      * @return tra ve fitness cua ca the theo thoi gian
      */
 
-    float fitnessCalculatorTime(List<String> gens){
+    public float fitnessCalculatorTime(List<String> gens){
         return 1/calculateTime(gens);
     }
 
@@ -198,12 +198,16 @@ public class PointServiceImpl implements IPointService {
      * @param pointInfo cac diem di qua nguoi dung muon
      * @return tra ve doan ma co chua 3 diem can xet
      */
-    List<String> geneSlicing (List<String> gens,PointInfo pointInfo){
+
+    @Override
+    public List<String> geneSlicing(List<String> gens, PointInfo pointInfo){
         int indexPoint1 = gens.indexOf(pointInfo.getPoint1());
         int indexPoint2 = gens.indexOf(pointInfo.getPoint2());
         int indexPoint3 = gens.indexOf(pointInfo.getPoint3());
         int pointStart = Math.min(indexPoint1,Math.min(indexPoint2,indexPoint3));
         int pointEnd = Math.max(indexPoint1,Math.min(indexPoint2,indexPoint3));
+        List<String> ok = new ArrayList<>();
+        if(indexPoint1 < 0 || indexPoint2 < 0 || indexPoint3 < 0) return ok;
         return gens.subList(pointStart,pointEnd+1);
     }
 
@@ -213,12 +217,12 @@ public class PointServiceImpl implements IPointService {
      * @return tra ve 1 quan the dc sap xep theo khoang cach tang dan  dan
      */
 
-    List<GenerationInformationByDistance> orderByDistance(List<GenerationInformationByDistance> list){
+    public List<GenerationInformationByDistance> orderByDistance(List<GenerationInformationByDistance> list){
         Collections.sort(list, new Comparator<GenerationInformationByDistance>() {
             @Override
             public int compare(GenerationInformationByDistance o1, GenerationInformationByDistance o2) {
-                if (o1.getShortestDistance() == o2.getShortestDistance()) return 0;
-                if (o1.getShortestDistance() > o2.getShortestDistance()) return 1;
+                if (o1.getDistance() == o2.getDistance()) return 0;
+                if (o1.getDistance() > o2.getDistance()) return 1;
                 return -1;
             }
         });
@@ -231,7 +235,7 @@ public class PointServiceImpl implements IPointService {
      * @return tra ve 1 quan the dc sap xep theo thoi gian tang dan dan
      */
 
-    List<GenerationInformationByTime> orderByTime(List<GenerationInformationByTime> list){
+    public List<GenerationInformationByTime> orderByTime(List<GenerationInformationByTime> list){
         Collections.sort(list, new Comparator<GenerationInformationByTime>() {
             @Override
             public int compare(GenerationInformationByTime o1, GenerationInformationByTime o2) {
@@ -248,10 +252,10 @@ public class PointServiceImpl implements IPointService {
      * @param list danh sach thong tin quan the gom gen va khoang cach
      * @return tra ve tong khoang cach cua 1 quan the
      */
-    float distanceTotal(List<GenerationInformationByDistance> list){
+    public float distanceTotal(List<GenerationInformationByDistance> list){
         float sum = 0;
         for(GenerationInformationByDistance generationInformationByDistance : list){
-            sum += generationInformationByDistance.getShortestDistance();
+            sum += generationInformationByDistance.getDistance();
         }
         return sum;
     }
@@ -262,7 +266,7 @@ public class PointServiceImpl implements IPointService {
      * @param list danh sach thong tin quan the gom gen va thoi gian
      * @return tra ve tong thoi gian cua 1 quan the
      */
-    float timeTotal(List<GenerationInformationByTime> list){
+    public float timeTotal(List<GenerationInformationByTime> list){
         float sum =0;
         for(GenerationInformationByTime generationInformationByTime : list){
             sum += generationInformationByTime.getTime();
@@ -270,7 +274,9 @@ public class PointServiceImpl implements IPointService {
         return sum;
     }
 
-
+//    float roundLet(){
+//
+//    }
 
 
     public static void main(String[] args) {
