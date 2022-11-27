@@ -27,12 +27,14 @@ public interface IPointService {
 
     float fitnessCalculatorTime(List<String> gens);
 
-    List<GenerationInformationByDistance> orderByDistance(List<GenerationInformationByDistance> list);
+    void orderByDistance(List<GenerationInformationByDistance> list);
 
     List<GenerationInformationByTime> orderByTime(List<GenerationInformationByTime> list);
 
     float distanceTotal(List<GenerationInformationByDistance> list);
 
     float timeTotal(List<GenerationInformationByTime> list);
+
+    float totalFitnessDistance(List<GenerationInformationByDistance> list, PointInfo pointInfo);
 
 }

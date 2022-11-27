@@ -10,10 +10,7 @@ import com.example.project_backend.service.IPointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PointServiceImpl implements IPointService {
@@ -44,29 +41,20 @@ public class PointServiceImpl implements IPointService {
     @Override
     public List<String> crossover(List<String> father, List<String> mother ,PointInfo pointInfo) {
         List<String> childIndividual ;
-        double a ;
-        int selectFatherOrMother  ;
+        Random generatorFather = new Random();
+        Random generatorMother = new Random();
+        int pointFather=0 ,pointMother =0;
+        childIndividual = new ArrayList<>();
         while(true){
-            int pointFather = (int) Math.random()*(father.size()-1);
-            int pointMother = (int) Math.random()*(mother.size()-1);
-            childIndividual = new ArrayList<>();
+             pointFather = generatorFather.nextInt(father.size()-1);
+             pointMother = generatorMother.nextInt(mother.size()-1);
+
             childIndividual.addAll(father.subList(0,pointFather));
             childIndividual.addAll(mother.subList(pointMother,mother.size()));
-
-
-//            for(int i = 0 ; i < father.size() ; i++){
-//                a = Math.random();
-//                selectFatherOrMother = (int) Math.round(a*2);
-//                while(selectFatherOrMother ==1){
-//                    a =Math.random();
-//                    selectFatherOrMother = (int) Math.round(a*2);
-//                }
-//                String s = (selectFatherOrMother == 0) ?  father.get(i) :  mother.get(i);
-//                childIndividual.add(s);
-//            }
             if(checkGen(childIndividual , pointInfo)) {
                 break;
             }
+            childIndividual.clear();
         }
 
         return childIndividual;
@@ -124,12 +112,14 @@ public class PointServiceImpl implements IPointService {
             }
         }
 
+        // kiem tra kich co
+        if(gens.size() < 3) return false;
         // kiem tra xem ma gen da di qua 3 diem chua
-        if(!(
-            gens.contains(pointInfo.getPoint1()) &&
-            gens.contains(pointInfo.getPoint1()) &&
-            gens.contains(pointInfo.getPoint1())
-        )){
+        if(
+            !gens.contains(pointInfo.getPoint1())  ||
+            !gens.contains(pointInfo.getPoint1()) ||
+            !gens.contains(pointInfo.getPoint1())
+        ){
             return false;
         }
 
@@ -152,7 +142,7 @@ public class PointServiceImpl implements IPointService {
                     : this.connectPointRepository.getDistance(gens.get(i),gens.get(i+1));
             distancePointTotal +=  distanceTwoPoint;
         }
-        return distancePointTotal;
+        return distancePointTotal == 0  ? 100000 : distancePointTotal;
     }
 
     /**
@@ -205,7 +195,7 @@ public class PointServiceImpl implements IPointService {
         int indexPoint2 = gens.indexOf(pointInfo.getPoint2());
         int indexPoint3 = gens.indexOf(pointInfo.getPoint3());
         int pointStart = Math.min(indexPoint1,Math.min(indexPoint2,indexPoint3));
-        int pointEnd = Math.max(indexPoint1,Math.min(indexPoint2,indexPoint3));
+        int pointEnd = Math.max(indexPoint1,Math.max(indexPoint2,indexPoint3));
         List<String> ok = new ArrayList<>();
         if(indexPoint1 < 0 || indexPoint2 < 0 || indexPoint3 < 0) return ok;
         return gens.subList(pointStart,pointEnd+1);
@@ -217,7 +207,7 @@ public class PointServiceImpl implements IPointService {
      * @return tra ve 1 quan the dc sap xep theo khoang cach tang dan  dan
      */
 
-    public List<GenerationInformationByDistance> orderByDistance(List<GenerationInformationByDistance> list){
+    public void orderByDistance(List<GenerationInformationByDistance> list){
         Collections.sort(list, new Comparator<GenerationInformationByDistance>() {
             @Override
             public int compare(GenerationInformationByDistance o1, GenerationInformationByDistance o2) {
@@ -226,7 +216,6 @@ public class PointServiceImpl implements IPointService {
                 return -1;
             }
         });
-        return list;
     }
 
     /**
@@ -272,6 +261,22 @@ public class PointServiceImpl implements IPointService {
             sum += generationInformationByTime.getTime();
         }
         return sum;
+    }
+
+    /**
+     * ham tinh tong fitness
+     * @param list danh sach quan the
+     * @return tra ve tong fitness
+     */
+
+
+    @Override
+    public float totalFitnessDistance(List<GenerationInformationByDistance> list ,PointInfo pointInfo) {
+        float sumFitness = 0;
+        for (GenerationInformationByDistance gen : list){
+            sumFitness += (fitnessCalculatorByDistance(this.geneSlicing(gen.getGens(),pointInfo)));
+        }
+        return sumFitness;
     }
 
 //    float roundLet(){

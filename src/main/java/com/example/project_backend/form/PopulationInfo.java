@@ -13,4 +13,5 @@ public class PopulationInfo {
     private List<String> gens;
     private float distance;
     private float time;
+    private float fitness;
 }
