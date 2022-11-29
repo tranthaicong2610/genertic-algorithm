@@ -76,10 +76,10 @@ public class PointServiceImpl implements IPointService {
                 childIndividual.add(val);
             }
             // vi tri dot bien
-            int mutationPoint =  (int)Math.round(Math.random()*(father.size()-1));
+            int mutationPoint =  (int)(Math.random()*(father.size()-1));
 
             // gia tri dot bien
-            String mutationValue = cityNames.get((int)Math.round(Math.random()*9));
+            String mutationValue = cityNames.get((int)(Math.random()*9));
 
             // cap nhat gen dot bien
             childIndividual.set(mutationPoint,mutationValue);

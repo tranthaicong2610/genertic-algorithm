@@ -26,7 +26,7 @@ public class PointController {
     }
 
     @PostMapping("/data")
-    public List<GenerationInformationByDistance> pointClient(@RequestBody PointInfo pointInfo){
+    public List<PopulationInfo> pointClient(@RequestBody PointInfo pointInfo){
         List<GenerationInformationByDistance> population = new ArrayList<>();
         List<PopulationInfo> populationInfos = new ArrayList<>(); //
         List<Float> roundLet = new ArrayList<>(); // danh sach roundLet
@@ -235,14 +235,7 @@ public class PointController {
         List<String> dataList99 = Arrays.asList(data99);
         List<String> dataList100 = Arrays.asList(data100);
 
-//        System.out.println(iPointService.geneSlicing(Arrays.asList(data90),new PointInfo("HANOI","HAIPHONG","NAMDINH")));
-        List<String> test = iPointService.geneSlicing(Arrays.asList(data1),new PointInfo("HANOI","HAIPHONG","NAMDINH"));
 
-        List<String> gens1 = new ArrayList<>();
-        List<String> gens2 = new ArrayList<>();
-        List<String> gens3 = new ArrayList<>();
-        List<String> gens4 = new ArrayList<>();
-        List<String> gens5 = new ArrayList<>();
 
 
         // tao the he 1
@@ -468,7 +461,14 @@ public class PointController {
 
 
 
+//        System.out.println(iPointService.geneSlicing(Arrays.asList(data90),new PointInfo("HANOI","HAIPHONG","NAMDINH")));
+//        List<String> test = iPointService.geneSlicing(Arrays.asList(data1),new PointInfo("HANOI","HAIPHONG","NAMDINH"));
 
+        List<String> gens1 = new ArrayList<>();
+        List<String> gens2 = new ArrayList<>();
+        List<String> gens3 = new ArrayList<>();
+        List<String> gens4 = new ArrayList<>();
+        List<String> gens5 = new ArrayList<>();
         gens1.add("HANOI");
         gens1.add("HAIPHONG");
         gens1.add("HANAM");
@@ -504,12 +504,12 @@ public class PointController {
         gens4.add("HANAM");
         gens4.add("NAMDINH");
         System.out.println(pointInfo.toString());
-        List<GenerationInformationByDistance> list = new ArrayList<>();
-        list.add(new GenerationInformationByDistance(123,  gens1));
-        list.add(new GenerationInformationByDistance(152,gens2));
-        list.add(new GenerationInformationByDistance(185,gens3));
-        list.add(new GenerationInformationByDistance(123,gens4));
-        list.add(new GenerationInformationByDistance(225,gens5));
+        List<PopulationInfo> list = new ArrayList<>();
+        list.add(new PopulationInfo(  gens1, 123F, 132F,  0.2F));
+        list.add(new PopulationInfo(gens1,133F, 232F,  0.3F));
+        list.add(new PopulationInfo(gens2,143F, 332F,  0.4F));
+        list.add(new PopulationInfo(gens3,153F, 432F,  0.5F));
+        list.add(new PopulationInfo(gens4,163F, 532F,  0.6F));
         return list;
     }
 }
