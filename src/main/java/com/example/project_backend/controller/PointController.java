@@ -27,8 +27,8 @@ public class PointController {
 
     @PostMapping("/data")
     public List<PopulationInfo> pointClient(@RequestBody PointInfo pointInfo){
-        List<GenerationInformationByDistance> population = new ArrayList<>();
-        List<PopulationInfo> populationInfos = new ArrayList<>(); //
+        List<GenerationInformationByDistance> population = new ArrayList<>(); // ban sao can dung de lai ghep va dot bien du lieu
+        List<PopulationInfo> populationInfos = new ArrayList<>(); // luu tru cac ma gen tot nhat cua cac the he
         List<Float> roundLet = new ArrayList<>(); // danh sach roundLet
         float totalFitness = 0 ; // tinh tong fitness
 
@@ -118,7 +118,7 @@ public class PointController {
         String[] data83 = {"BINHDUONG",  "HAIPHONG", "HOCHIMINH", "QUANGNGAI", "HOCHIMINH","NAMDINH","HANOI", "QUANGNGAI"};
         String[] data84 = {"NAMDINH", "BACNINH", "BINHTHUAN", "BACNINH","HAIPHONG","HANOI", "HOCHIMINH", "BACNINH", "HAIDUONG", "HOCHIMINH", "QUANGNGAI", "THAIBINH", "HOCHIMINH"};
         String[] data85 = {"BINHTHUAN", "HAIDUONG", "BINHDUONG", "HAIPHONG","HANOI", "BACNINH","NAMDINH", "HOCHIMINH"};
-        String[] data86 = {"NAMDINH", "HAIDUONG", "NAMDINH", "HAIDUONG", "BACNINH", "QUANGNGAI", "HANOI", "HAIPHONG", "BINHTHUAN", "HAIPHONG", "HAIPHONG","HOCHIMINH"};
+        String[] data86 = {"NAMDINH", "HAIDUONG", "NAMDINH", "HAIDUONG", "BACNINH", "QUANGNGAI", "HANOI", "HAIPHONG", "BINHTHUAN", "HAIPHONG","HOCHIMINH"};
         String[] data87 = {"THAIBINH", "HANOI", "HAIPHONG", "NAMDINH", "BINHTHUAN", "HANOI", "HAIDUONG", "QUANGNGAI", "NAMDINH", "BINHDUONG", "THAIBINH"};
         String[] data88 = {"BINHDUONG", "HOCHIMINH", "NAMDINH", "HANOI", "THAIBINH", "QUANGNGAI", "HANOI", "BINHDUONG", "HOCHIMINH", "BACNINH", "HAIPHONG"};
         String[] data89 = {"HAIPHONG", "BINHTHUAN", "HAIPHONG", "HOCHIMINH","NAMDINH", "QUANGNGAI", "BINHTHUAN", "QUANGNGAI", "HANOI", "HAIPHONG", "HAIDUONG", "HANOI"};
@@ -341,123 +341,97 @@ public class PointController {
         generation1.add(new GenerationInformationByDistance(  iPointService.calculateDistance(iPointService.geneSlicing(dataList98,pointInfo)),dataList98));
         generation1.add(new GenerationInformationByDistance( iPointService.calculateDistance(iPointService.geneSlicing(dataList99,pointInfo)),dataList99));
         generation1.add(new GenerationInformationByDistance(  iPointService.calculateDistance(iPointService.geneSlicing(dataList100,pointInfo)),dataList100));
-        totalFitness = iPointService.totalFitnessDistance(generation1,pointInfo);
+        for(int k=0;k<100 ;k++){
+            totalFitness = iPointService.totalFitnessDistance(generation1,pointInfo);
 
-        //sap xep quan the theo thu tu tot nhat xuong kem nhat
-        iPointService.orderByDistance(generation1);
+            //sap xep quan the theo thu tu tot nhat xuong kem nhat
+            iPointService.orderByDistance(generation1);
 
-        //tinh roundLet
-        for (int i =0 ; i<generation1.size() ; i++  ){
-            float element = iPointService.fitnessCalculatorByDistance(iPointService.geneSlicing(generation1.get(i).getGens(),pointInfo))/totalFitness;
+            //tinh roundLet
+            for (int i =0 ; i<generation1.size() ; i++  ){
+                float element = iPointService.fitnessCalculatorByDistance(iPointService.geneSlicing(generation1.get(i).getGens(),pointInfo))/totalFitness;
 
-            if (i>0){
-                roundLet.add(element + roundLet.get(i-1));
+                if (i>0){
+                    roundLet.add(element + roundLet.get(i-1));
+                }
+                else{
+                    roundLet.add(element);
+                }
+
             }
-            else{
-                roundLet.add(element);
+
+            // gan quan the cho mang moi de lai ghep va dot bien
+            for (int i =0 ;i< generation1.size();i++){
+                population.add(generation1.get(i));
             }
-
-        }
-
-        // gan quan the cho mang moi de luu du va dot bien
-        for (int i =0 ;i< generation1.size();i++){
-            population.add(generation1.get(i));
-        }
 // danh sach luu 5 gens tot nhat
 
-        List<GenerationInformationByDistance> listBest5 = new ArrayList<>();
-        listBest5.add(generation1.get(0));
-        listBest5.add(generation1.get(1));
-        listBest5.add(generation1.get(2));
-        listBest5.add(generation1.get(3));
-        listBest5.add(generation1.get(4));
-        generation1.clear();
-        generation1.add(listBest5.get(0));
-        generation1.add(listBest5.get(1));
-        generation1.add(listBest5.get(2));
-        generation1.add(listBest5.get(3));
-        generation1.add(listBest5.get(4));
-        listBest5.clear();
+            List<GenerationInformationByDistance> listBest5 = new ArrayList<>();
+            listBest5.add(generation1.get(0));
+            listBest5.add(generation1.get(1));
+            listBest5.add(generation1.get(2));
+            listBest5.add(generation1.get(3));
+            listBest5.add(generation1.get(4));
+            generation1.clear();
+            generation1.add(listBest5.get(0));
+            generation1.add(listBest5.get(1));
+            generation1.add(listBest5.get(2));
+            generation1.add(listBest5.get(3));
+            generation1.add(listBest5.get(4));
+            listBest5.clear();
 
-        populationInfos.add(new PopulationInfo(generation1.get(0).getGens(),generation1.get(0).getDistance(),0,
-                iPointService.fitnessCalculatorByDistance(iPointService.geneSlicing(generation1.get(0).getGens(),pointInfo))));
-        // lai gep
-        int loop =0;
+            populationInfos.add(new PopulationInfo(iPointService.geneSlicing(generation1.get(0).getGens(),pointInfo) ,generation1.get(0).getDistance(),0,
+                    iPointService.fitnessCalculatorByDistance(iPointService.geneSlicing(generation1.get(0).getGens(),pointInfo))));
+            // lai gep
+            int loop =0;
 
-        while(loop<85)
-        {
-            loop++;
-            float selectFather = (float) Math.random();
-            float selectMother = (float) Math.random();
-            int indexFather =0  , indexMother =0  ;
-            boolean findFaher = false , findMother  = false;
-            for(int i=0 ; i<roundLet.size();i++){
-                if(!findFaher&& selectFather < roundLet.get(i)){
-                    findFaher = true;
-                    indexFather   = i ;
+            while(loop<85)
+            {
+                loop++;
+                float selectFather = (float) Math.random();
+                float selectMother = (float) Math.random();
+                int indexFather =0  , indexMother =0  ;
+                boolean findFaher = false , findMother  = false;
+                for(int i=0 ; i<roundLet.size();i++){
+                    if(!findFaher&& selectFather < roundLet.get(i)){
+                        findFaher = true;
+                        indexFather   = i ;
+                    }
+                    if (!findMother && selectMother < roundLet.get(i) ){
+                        findMother = true;
+                        indexMother = i ;
+
+                    }
+                    if( findFaher && findMother ) break;
                 }
-                if (!findMother && selectMother < roundLet.get(i) ){
-                    findMother = true;
-                    indexMother = i ;
-
-                }
-                if( findFaher && findMother ) break;
+                List<String> createCrossover =  iPointService.crossover(population.get(indexFather).getGens(),population.get(indexMother).getGens(),pointInfo );
+                generation1.add(new GenerationInformationByDistance(iPointService.calculateDistance(iPointService.geneSlicing(createCrossover,pointInfo)),createCrossover));
             }
-            List<String> createCrossover =  iPointService.crossover(population.get(indexFather).getGens(),population.get(indexMother).getGens(),pointInfo );
-            generation1.add(new GenerationInformationByDistance(iPointService.calculateDistance(iPointService.geneSlicing(createCrossover,pointInfo)),createCrossover));
-        }
-        // dot bien 10 % con lai
-        loop = 0;
-        while(loop < 10) {
-            loop++;
-            float selectFather = (float) Math.random();
-            int indexFather = 0 ;
-            boolean findFaher = false;
-            for(int i=0 ; i<roundLet.size();i++){
-                if(!findFaher&& selectFather < roundLet.get(i)){
-                    findFaher = true;
-                    indexFather   = i ;
-                    break;
-                }
+            // dot bien 10 % con lai
+            loop = 0;
+            while(loop < 10) {
+                loop++;
+                float selectFather = (float) Math.random();
+                int indexFather = 0 ;
+                boolean findFaher = false;
+                for(int i=0 ; i<roundLet.size();i++){
+                    if(!findFaher&& selectFather < roundLet.get(i)){
+                        findFaher = true;
+                        indexFather   = i ;
+                        break;
+                    }
 
+                }
+                List<String> createMutation =  iPointService.mutation(population.get(indexFather).getGens(),pointInfo );
+                generation1.add(new GenerationInformationByDistance(iPointService.calculateDistance(iPointService.geneSlicing(createMutation,pointInfo)),createMutation));
             }
-            List<String> createMutation =  iPointService.mutation(population.get(indexFather).getGens(),pointInfo );
-            generation1.add(new GenerationInformationByDistance(iPointService.calculateDistance(iPointService.geneSlicing(createMutation,pointInfo)),createMutation));
+            population.clear();
         }
+
         // the he moi duoc tao ra
         for(GenerationInformationByDistance g : generation1){
             System.out.println(g.getDistance()+" : "+g.getGens() );
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -510,6 +484,6 @@ public class PointController {
         list.add(new PopulationInfo(gens2,143F, 332F,  0.4F));
         list.add(new PopulationInfo(gens3,153F, 432F,  0.5F));
         list.add(new PopulationInfo(gens4,163F, 532F,  0.6F));
-        return list;
+        return populationInfos;
     }
 }
