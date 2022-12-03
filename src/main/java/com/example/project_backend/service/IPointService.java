@@ -1,5 +1,6 @@
 package com.example.project_backend.service;
 
+import com.example.project_backend.form.ConnectionTwoPoint;
 import com.example.project_backend.form.GenerationInformationByDistance;
 import com.example.project_backend.form.GenerationInformationByTime;
 import com.example.project_backend.form.PointInfo;
@@ -36,5 +37,7 @@ public interface IPointService {
     float timeTotal(List<GenerationInformationByTime> list);
 
     float totalFitnessDistance(List<GenerationInformationByDistance> list, PointInfo pointInfo);
+
+    List<ConnectionTwoPoint> genToConnectTwoPoint(List<String> gens);
 
 }

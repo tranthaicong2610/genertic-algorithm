@@ -1,5 +1,6 @@
 package com.example.project_backend.service.impl;
 
+import com.example.project_backend.form.ConnectionTwoPoint;
 import com.example.project_backend.form.GenerationInformationByDistance;
 import com.example.project_backend.form.GenerationInformationByTime;
 import com.example.project_backend.form.PointInfo;
@@ -277,6 +278,15 @@ public class PointServiceImpl implements IPointService {
             sumFitness += (fitnessCalculatorByDistance(this.geneSlicing(gen.getGens(),pointInfo)));
         }
         return sumFitness;
+    }
+
+    @Override
+    public List<ConnectionTwoPoint> genToConnectTwoPoint(List<String> gens) {
+        List<ConnectionTwoPoint> list = new ArrayList<>();
+        for(int i=1;i<gens.size();i++){
+            list.add(new ConnectionTwoPoint(gens.get(i-1),gens.get(i)));
+        }
+        return list;
     }
 
 //    float roundLet(){
