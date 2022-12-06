@@ -38,6 +38,10 @@ public interface IPointService {
 
     float totalFitnessDistance(List<GenerationInformationByDistance> list, PointInfo pointInfo);
 
+    float totalFitnessTime(List<GenerationInformationByTime> list, PointInfo pointInfo);
+
     List<ConnectionTwoPoint> genToConnectTwoPoint(List<String> gens);
+
+    Boolean checkGen(List<String> gens ,PointInfo pointInfo);
 
 }

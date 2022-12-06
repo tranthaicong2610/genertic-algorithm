@@ -1,15 +1,13 @@
 package com.example.project_backend.form;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class PointInfo {
-    private String point1;
-    private String point2;
-    private String point3;
-    private boolean select;
+@NoArgsConstructor
+public class Gen {
+    private List<String> gen;
 }

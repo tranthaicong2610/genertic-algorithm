@@ -105,7 +105,7 @@ public class PointServiceImpl implements IPointService {
      * @return
      */
 
-    static Boolean checkGen(List<String> gens ,PointInfo pointInfo){
+    public Boolean checkGen(List<String> gens ,PointInfo pointInfo){
         // kiem tra xem co 2 gia tri trung gan nhau
         for(int i=0;i < gens.size()-1 ;i++){
             if(gens.get(i).equals(gens.get(i+1)) ){
@@ -114,12 +114,13 @@ public class PointServiceImpl implements IPointService {
         }
 
         // kiem tra kich co
-        if(gens.size() < 3) return false;
+        if(gens.size() < 3 && gens.size() > 17) return false;
+
         // kiem tra xem ma gen da di qua 3 diem chua
         if(
-            !gens.contains(pointInfo.getPoint1())  ||
-            !gens.contains(pointInfo.getPoint1()) ||
-            !gens.contains(pointInfo.getPoint1())
+            gens.contains(pointInfo.getPoint1()) == false ||
+            gens.contains(pointInfo.getPoint2()) == false ||
+            gens.contains(pointInfo.getPoint3()) == false
         ){
             return false;
         }
@@ -276,6 +277,15 @@ public class PointServiceImpl implements IPointService {
         float sumFitness = 0;
         for (GenerationInformationByDistance gen : list){
             sumFitness += (fitnessCalculatorByDistance(this.geneSlicing(gen.getGens(),pointInfo)));
+        }
+        return sumFitness;
+    }
+
+    @Override
+    public float totalFitnessTime(List<GenerationInformationByTime> list, PointInfo pointInfo) {
+        float sumFitness = 0;
+        for (GenerationInformationByTime gen : list){
+            sumFitness += (fitnessCalculatorTime(this.geneSlicing(gen.getGens(),pointInfo)));
         }
         return sumFitness;
     }
