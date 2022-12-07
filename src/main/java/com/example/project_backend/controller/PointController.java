@@ -104,11 +104,11 @@ public class PointController {
                 listBest5.add(generation1.get(3));
                 listBest5.add(generation1.get(4));
                 theBest5Distances.add(new TheBest5Distance(
-                        (List<GenerationInformationByDistance>) listBest5.get(0),
-                        (List<GenerationInformationByDistance>) listBest5.get(1),
-                        (List<GenerationInformationByDistance>) listBest5.get(2),
-                        (List<GenerationInformationByDistance>) listBest5.get(3),
-                        (List<GenerationInformationByDistance>) listBest5.get(4)));
+                         listBest5.get(0),
+                         listBest5.get(1),
+                         listBest5.get(2),
+                         listBest5.get(3),
+                         listBest5.get(4)));
                 generation1.clear();
                 generation1.add(listBest5.get(0));
                 generation1.add(listBest5.get(1));
@@ -163,7 +163,7 @@ public class PointController {
                     generation1.add(new GenerationInformationByDistance(iPointService.calculateDistance(iPointService.geneSlicing(createMutation,pointInfo)),createMutation));
                 }
                 if(theBest5Distances.size()>4){
-                    check = theBest5Distances.get(theBest5Distances.size()-1).equals(theBest5Distances.size()-5);
+                    check = !theBest5Distances.get(theBest5Distances.size()-1).equals(theBest5Distances.size()-5);
 
                 }
                 if (!check) break;
@@ -219,11 +219,11 @@ public class PointController {
             listBest5.add(generation1.get(3));
             listBest5.add(generation1.get(4));
             theBest5Times.add(new TheBest5Time(
-                    (List<GenerationInformationByTime>) listBest5.get(0),
-                    (List<GenerationInformationByTime>) listBest5.get(1),
-                    (List<GenerationInformationByTime>) listBest5.get(2),
-                    (List<GenerationInformationByTime>) listBest5.get(3),
-                    (List<GenerationInformationByTime>) listBest5.get(4)));
+                     listBest5.get(0),
+                     listBest5.get(1),
+                     listBest5.get(2),
+                     listBest5.get(3),
+                     listBest5.get(4)));
             generation1.clear();
             generation1.add(listBest5.get(0));
             generation1.add(listBest5.get(1));
@@ -278,7 +278,7 @@ public class PointController {
                 generation1.add(new GenerationInformationByTime(iPointService.calculateTime(iPointService.geneSlicing(createMutation,pointInfo)),createMutation));
             }
             if(theBest5Times.size()>4){
-                check = theBest5Times.get(theBest5Times.size()-1).equals(theBest5Times.size()-5);
+                check = !theBest5Times.get(theBest5Times.size()-1).equals(theBest5Times.size()-5);
 
             }
             if (!check) break;

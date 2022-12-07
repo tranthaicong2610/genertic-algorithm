@@ -9,9 +9,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TheBest5Time {
-    private List<GenerationInformationByTime> list1;
-    private List<GenerationInformationByTime> list2;
-    private List<GenerationInformationByTime> list3;
-    private List<GenerationInformationByTime> list4;
-    private List<GenerationInformationByTime> list5;
+    private GenerationInformationByTime list1;
+    private GenerationInformationByTime list2;
+    private GenerationInformationByTime list3;
+    private GenerationInformationByTime list4;
+    private GenerationInformationByTime list5;
 }

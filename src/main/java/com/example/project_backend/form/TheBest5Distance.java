@@ -9,10 +9,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TheBest5Distance {
-    private List<GenerationInformationByDistance> list1;
-    private List<GenerationInformationByDistance> list2;
-    private List<GenerationInformationByDistance> list3;
-    private List<GenerationInformationByDistance> list4;
-    private List<GenerationInformationByDistance> list5;
+    private GenerationInformationByDistance list1;
+    private GenerationInformationByDistance list2;
+    private GenerationInformationByDistance list3;
+    private GenerationInformationByDistance list4;
+    private GenerationInformationByDistance list5;
 
 }
