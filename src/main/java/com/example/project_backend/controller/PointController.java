@@ -163,7 +163,7 @@ public class PointController {
                     generation1.add(new GenerationInformationByDistance(iPointService.calculateDistance(iPointService.geneSlicing(createMutation,pointInfo)),createMutation));
                 }
                 if(theBest5Distances.size()>4){
-                    check = !theBest5Distances.get(theBest5Distances.size()-1).equals(theBest5Distances.size()-5);
+                    check = !theBest5Distances.get(theBest5Distances.size()-1).equals(theBest5Distances.get(theBest5Distances.size()-5));
 
                 }
                 if (!check) break;
@@ -278,7 +278,7 @@ public class PointController {
                 generation1.add(new GenerationInformationByTime(iPointService.calculateTime(iPointService.geneSlicing(createMutation,pointInfo)),createMutation));
             }
             if(theBest5Times.size()>4){
-                check = !theBest5Times.get(theBest5Times.size()-1).equals(theBest5Times.size()-5);
+                check = !theBest5Times.get(theBest5Times.size()-1).equals(theBest5Times.get(theBest5Times.size()-5));
 
             }
             if (!check) break;
